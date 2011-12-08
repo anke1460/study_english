@@ -63,7 +63,7 @@ Ext.define('StudyLanguage.view.Viewport', {
                                 flex: 4,
                                 xtype: 'searchfield',
                                 id: 'textquery',
-                                input: {dom:{value:0}}
+                                name: 'textquery'
                              },
                              { xtype: 'spacer' },
                              {

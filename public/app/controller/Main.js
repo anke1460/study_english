@@ -57,6 +57,8 @@ Ext.define('StudyLanguage.controller.Main', {
     
     onloadNextPage: function() {
          var store = this.getGREStore();
+         console.log(this.getSearchWord())
+         console.log(this.getSearchWord().getValue())
          if(store.currentPage <= store.total_page){
            var i = store.pageSize * store.currentPage;
            this.word_process.loadData({query: Ext.getCmp('textquery').getValue(), offset: i}, store);
@@ -69,14 +71,17 @@ Ext.define('StudyLanguage.controller.Main', {
         
         console.log(this.getSearchWord().getValue())
        this.word_process.searchWord({query: t.getValue()}, this.getGREStore());
-       Ext.getCmp('textquery').setValue(t.getValue())
+       //Ext.getCmp('textquery').setValue(t.getValue())
        this.getGREStore().currentPage = 1;
     },
     
     onSearchBlur: function() {
-       this.getSearchWord().setValue("");
+       console.log(335)
+      // this.getSearchWord().setValue("");
        var store = this.getGREStore();
-       this.word_process.loadData({query: '', offset: 0}, store);
+       var proxy = store.getProxy();
+       proxy.dbConfig.dbQuery = "select * from words limit 10";
+       store.load();
        this.getGREStore().currentPage = 1;
         
     }

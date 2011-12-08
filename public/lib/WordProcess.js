@@ -32,17 +32,8 @@ Ext.define('StudyLanguage.WordProcess',{
                        params.query + "%' or chinese like '%" +
                         params.query + "%'  limit " + store.pageSize +
                         " offset " + params.offset;
-      console.log(proxy.dbConfig.dbQuery );
       this.setStorePageCount(params, store);
       store.load();
-      return
-      var call_back = this.callBack(store);
-      
-      this.executeSql("select * from words where english like '%" +
-                       params.query + "%' or chinese like '%" +
-                        params.query + "%'  limit " + store.pageSize +
-                        " offset " + params.offset,
-                        call_back);
     },
     
     setStorePageCount: function(params, store) {
@@ -65,34 +56,18 @@ Ext.define('StudyLanguage.WordProcess',{
      });
      },
      
-     callBack: function(store) {
-        
-       return function(t, result) {
-         var data = [];
-        // store.load();
-							
-         store.removeAll();
-         if (result.rows.length > 0) {
-           for(var i= 0;i< result.rows.length ;i++) {
-          //  console.log(result.rows.item(i))
-         // new StudyLanguage.model.Word(result.rows.item(i))
-          //  Ext.ModelManager.create('StudyLanguage.model.Word',result.rows.item(i));
-            //data.push(result.rows.item(i))
-           }
-        // store.add(data);
-          store.load();
-         }
-      }  
-     },
      
      searchWord: function(params, store) {
+        var proxy = store.getProxy();
        if (params.query == "") {
-         this.loadData({query:"", offset:0}, store);
+          proxy.dbConfig.dbQuery = "select * from words limit 10";
         } else {
-          var result = this.callBack(store);
-          this.setStorePageCount(params, store);
-          this.executeSql("select * from words where english like '%" + params.query +"%' or chinese like '%"+ params.query +"%' limit 10", result);
+          this.setStorePageCount(params, store); 
+          proxy.dbConfig.dbQuery = "select * from words where english like '%" + params.query +"%' or chinese like '%"+ params.query +"%' limit 10";
          }
+         console.log(334)
+         console.log(proxy.dbConfig.dbQuery)
+         store.load();
      }
     });
 
