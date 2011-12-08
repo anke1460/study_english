@@ -1,11 +1,43 @@
+Ext.data.Batch.override({
+    constructor: function(config) {
+        var me = this;
+        if (config.hasOwnProperty) {
+             this.proxy = config.proxy;
+          }
+          me.mixins.observable.constructor.call(me, config);
+          me.operations = [];
+    }
+});
+
+
+
+Ext.Base.override('Ext.ModelManager',{
+    create: function(config, name, id) {
+        var con = typeof name == 'function' ? name : this.types[name || config.name];
+         console.log(con)
+        return new con(config, id);
+    }
+    })
+
+
+
 Ext.define('StudyLanguage.WordProcess',{
     constructor: function(config) {
         this.callParent(arguments);
     },
     
     loadData: function(params, store) {
-      var call_back = this.callBack(store);
+      var proxy = store.getProxy();
+      proxy.dbConfig.dbQuery = "select * from words where english like '%" +
+                       params.query + "%' or chinese like '%" +
+                        params.query + "%'  limit " + store.pageSize +
+                        " offset " + params.offset;
+      console.log(proxy.dbConfig.dbQuery );
       this.setStorePageCount(params, store);
+      store.load();
+      return
+      var call_back = this.callBack(store);
+      
       this.executeSql("select * from words where english like '%" +
                        params.query + "%' or chinese like '%" +
                         params.query + "%'  limit " + store.pageSize +
@@ -37,12 +69,18 @@ Ext.define('StudyLanguage.WordProcess',{
         
        return function(t, result) {
          var data = [];
+        // store.load();
+							
          store.removeAll();
          if (result.rows.length > 0) {
-           for(var i= 0;i< result.rows.length ;i++){
-            data.push(result.rows.item(i))
+           for(var i= 0;i< result.rows.length ;i++) {
+          //  console.log(result.rows.item(i))
+         // new StudyLanguage.model.Word(result.rows.item(i))
+          //  Ext.ModelManager.create('StudyLanguage.model.Word',result.rows.item(i));
+            //data.push(result.rows.item(i))
            }
-         store.add(data);
+        // store.add(data);
+          store.load();
          }
       }  
      },

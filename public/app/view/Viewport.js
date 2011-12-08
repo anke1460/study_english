@@ -9,7 +9,6 @@ Ext.override('Ext.field.Input',{
 
 Ext.define('StudyLanguage.view.Viewport', {
     extend: 'Ext.tab.Panel',
-    id: 'd',
     config: {
         fullscreen: true,
 
@@ -42,7 +41,6 @@ Ext.define('StudyLanguage.view.Viewport', {
                     xtype: 'list',
                     title: 'My deck',
                     iconCls: 'star',
-                    preventSelectionOnDisclose: false,
                     onItemDisclosure  : function(record){
                         StudyLanguage.play(record.get('ID'));
                         },
@@ -111,8 +109,9 @@ Ext.define('StudyLanguage.view.Viewport', {
                             ui: 'confirm',
                             handler: function() {
                                 var data = this.up('formpanel').getValues();
-                                
-                                store.add({english: data.english, chinese: data.chinese, other: data.other})
+                                console.log(data)
+                                return;
+                                store.add({english: data.english, chinese: data.chinese, english_pronunciation: data.english_pronunciation})
                                 store.sync();
                                 store.load();
                                 this.up('formpanel').reset();

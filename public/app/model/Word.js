@@ -1,8 +1,7 @@
 
 var dbconnval = {
       dbName: "study",
-      dbDescription: "GRE DB",
-      dbSize: 1024*1024*10
+      dbDescription: "GRE DB"
 };
 
 Ext.DbConnection = new Ext.Sqlite.Connection(dbconnval);
@@ -32,7 +31,8 @@ Ext.define('StudyLanguage.model.Word', {
 		type: 'sqlitestorage',
 		 dbConfig: {
 		    tablename: 'words',
-		    dbConn: Ext.DbConnection.dbConn
+		    dbConn: Ext.DbConnection.dbConn,
+                    dbQuery: 'select * from words order by ID limit 10 '
 		    },
 		    reader: {
 		      type: 'array',

@@ -66,8 +66,12 @@ Ext.define('Ext.data.proxy.SqliteStorage', {
     //inherit docs
     read: function(operation, callback, scope) {
         var me = this;
-       
+       console.log(44)
+       console.log(me.dbConfig)
+       console.log(me.dbConfig.dbQuery)
         var sql = me.dbConfig.dbQuery || 'SELECT * FROM '+me.dbConfig.tablename+'';
+	console.log(111)
+	console.log(sql)
         
         var params, onSucess, onError;
         

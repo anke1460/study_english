@@ -21,6 +21,7 @@ Ext.define('StudyLanguage.controller.Main', {
     init: function() {
         Ext.create('StudyLanguage.view.Viewport');
         this.word_process = Ext.create('StudyLanguage.WordProcess');
+        store = this.getGREStore();
         this.word_process.loadData({query:"", offset:0}, this.getGREStore());
         this.getViewportView().create();
         this.control({
@@ -42,6 +43,8 @@ Ext.define('StudyLanguage.controller.Main', {
     
     onLoadLastPage: function () {
        var store = this.getGREStore();
+       store=this.getGREStore();
+       console.log(store)
            if(store.currentPage != 1) {
               store.currentPage -= 1;
               var i = store.pageSize * (store.currentPage - 1);
@@ -54,7 +57,6 @@ Ext.define('StudyLanguage.controller.Main', {
     
     onloadNextPage: function() {
          var store = this.getGREStore();
-         console.log(this.getSearchWord().getValue())
          if(store.currentPage <= store.total_page){
            var i = store.pageSize * store.currentPage;
            this.word_process.loadData({query: Ext.getCmp('textquery').getValue(), offset: i}, store);
